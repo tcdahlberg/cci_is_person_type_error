@@ -1,0 +1,38 @@
+minimum_cumulusci_version: '3.84.0'
+project:
+    name: cci_is_person_type_error
+    package:
+        name: cci_is_person_type_error
+        api_version: '59.0'
+    dependencies:
+        - github: 'https://github.com/SalesforceFoundation/EDA'
+    git:
+    source_format: sfdx
+
+tasks:
+    robot:
+        options:
+            suites: robot/cci_is_person_type_error/tests
+            options:
+                outputdir: robot/cci_is_person_type_error/results
+
+    robot_testdoc:
+        options:
+            path: robot/cci_is_person_type_error/tests
+            output: robot/cci_is_person_type_error/doc/cci_is_person_type_error_tests.html
+
+    run_tests:
+        options:
+            required_org_code_coverage_percent: 75
+
+    create_fake_school_data:
+        description: Makes fake account data to mimic schools with Educaiton as industry
+        class_path: cumulusci.tasks.bulkdata.snowfakery.Snowfakery
+        options:
+            recipe: datasets/snowfakery/fake_schools.yml
+
+flows:
+    config_dev:
+        steps:
+            6:
+                task: create_fake_school_data
